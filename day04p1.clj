@@ -46,13 +46,13 @@
             :is-met-by
             :is-preceded-by))))))
 
-(defn overlaps? [relation]
-  (contains? #{:contains :during :starts :is-started-by :finishes :is-finished-by :equal :overlaps :is-overlapped-by} relation))
+(defn is-subset [relation]
+  (contains? #{:contains :during :starts :is-started-by :finishes :is-finished-by :equal} relation))
 
 (defn result-of-lines [lines]
   (let [parsed-lines (map line-parse lines)
         allen-relations (map allen-relation parsed-lines)]
-    (count (filter overlaps? allen-relations))))
+    (count (filter is-subset allen-relations))))
 
 (defn result-of-file [filename]
   (let [lines (read-lines filename)]
@@ -84,9 +84,9 @@
         line-5 "6-6,4-6"
         line-6 "2-6,4-8"
         lines [line-1 line-2 line-3 line-4 line-5 line-6]]
-    (is (= 4 (result-of-lines lines)))))
+    (is (= 2 (result-of-lines lines)))))
 
 (deftest result-of-file-test
-  (is (= 900 (result-of-file "inputs/day04.input"))))
+  (is (= 542 (result-of-file "inputs/day04.input"))))
 
 (run-tests)

@@ -24,7 +24,7 @@
     (reduce + top-three)))
 
 (deftest input-test
-  (let [inventories (read-inventories-num "day01.input")
+  (let [inventories (read-inventories-num "inputs/day01.input")
         result (sum-top-three inventories)]
     (is (= 199357 result))))
 

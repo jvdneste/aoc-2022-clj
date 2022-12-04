@@ -14,8 +14,8 @@
   (let [[left right] (str/split line #" ")]
     (encoded-round left right)))
 
-(defrecord DecodedRound [opponent result encoded]
-  Object (toString [_] (format "DecodedRound{:opponent %s :result %s :encoded %s}" opponent result encoded)))
+(defrecord DecodedRound [opponent result]
+  Object (toString [_] (format "DecodedRound{:opponent %s :result %s}" opponent result)))
 
 (defn decode-opponent [value]
   (case value
@@ -31,7 +31,7 @@
 
 (defn decoded-round [encoded]
   (let [{left :left right :right} encoded]
-    (->DecodedRound (decode-opponent left) (decode-result right) encoded)))
+    (->DecodedRound (decode-opponent left) (decode-result right))))
 
 (defn rounds-read-file [filename]
   (with-open [rdr (clojure.java.io/reader filename)]
@@ -54,20 +54,19 @@
       [:paper :win] (score 2 9)
       [:scissors :win] (score 3 7)
       [:scissors :lose] (score 9 2)
-      [:scissors :draw] (score 6 6)
-      [nil nil] (score 0 0))))
+      [:scissors :draw] (score 6 6))))
 
 (defn score-add [score-1 score-2]
   (score (+ (:opponent score-1) (:opponent score-2)) (+ (:me score-1) (:me score-2))))
 
-(defn winner-of-rounds [rounds]
+(defn score-of-rounds [rounds]
   (let [scores (map score-of-round rounds)]
     (reduce score-add scores)))
 
-(defn winner-of-file [filename]
+(defn score-of-file [filename]
   (let [encoded-rounds (rounds-read-file filename)
         decoded-rounds (map decoded-round encoded-rounds)]
-    (winner-of-rounds decoded-rounds)))
+    (score-of-rounds decoded-rounds)))
 
 (deftest encoded-round-parse-test
   (is (= (encoded-round "A" "X") (encoded-round-parse "A X")))
@@ -90,9 +89,9 @@
         round-2 (decoded-round (encoded-round "B" "X")) ; 8 1
         round-3 (decoded-round (encoded-round "C" "Z")) ; 3 7
         rounds [round-1 round-2 round-3]]
-    (is (= (score 15 12) (winner-of-rounds rounds)))))
+    (is (= (score 15 12) (score-of-rounds rounds)))))
 
 (deftest winner-of-file-test
-  (is (= (score 13658 10560) (winner-of-file "day02.input"))))
+  (is (= (score 13658 10560) (score-of-file "inputs/day02.input"))))
 
 (run-tests)

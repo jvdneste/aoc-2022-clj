@@ -23,7 +23,7 @@
   (apply max (map #(reduce + %) inventories)))
 
 (deftest input-test
-  (let [inventories (read-inventories-num "day01.input")
+  (let [inventories (read-inventories-num "inputs/day01.input")
         result (max-inventory inventories)]
     (is (= 67450 result))))
 

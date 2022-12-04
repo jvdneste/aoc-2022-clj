@@ -93,6 +93,6 @@
     (is (= (score 15 15) (winner-of-rounds rounds)))))
 
 (deftest winner-of-file-test
-  (is (= (score 14711 9651) (winner-of-file "day02.input"))))
+  (is (= (score 14711 9651) (winner-of-file "inputs/day02.input"))))
 
 (run-tests)

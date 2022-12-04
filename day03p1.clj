@@ -58,6 +58,6 @@
     (is (= 157 (result-of-lines lines)))))
 
 (deftest result-of-file-test
-  (is (= 8109 (result-of-file "day03.input"))))
+  (is (= 8109 (result-of-file "inputs/day03.input"))))
 
 (run-tests)
